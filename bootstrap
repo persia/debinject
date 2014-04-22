@@ -1,0 +1,78 @@
+#! /usr/bin/make -rRf
+#
+# Copyright .. 2014, Emmet Hikory <persia@shipstone.jp>
+#
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
+# OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+include bootstrap.conf
+PROGNAME := $(firstword $(MAKEFILE_LIST))
+
+# Utilities used
+MKTEMP := /bin/mktemp
+MKDIR := /bin/mkdir
+CP := /bin/cp
+AR := /usr/bin/ar
+TAR := /bin/tar
+RM := /bin/rm
+ECHO := /bin/echo
+WGET := /usr/bin/wget
+NROFF := /usr/bin/nroff
+
+# Functions
+firstchar = $(shell echo $(1) | cut -c1)
+srcpath = debian/pool/main/$(call firstchar,$(1))/$(1)
+deb2url = http://$(MIRROR)/$(call srcpath,$(SOURCE))/$(1)
+debname = $(1)_$(VERSION)_$(2).deb
+
+configure: $(PACKAGES)
+	-[ -s $(CONFSCRIPT) ] && $(CONFSCRIPT)
+
+ifdef ARCH
+ifneq ($(filter $(ARCH),$(ARCHES)),)
+$(PACKAGES): tmp := $(shell $(MKTEMP) -u tmpXXXXXX)
+$(PACKAGES): %: pkgcache/$(call debname,%,$(ARCH))
+	$(MKDIR) -p $@$(tmp)/
+	$(CP) $< $@$(tmp)/
+	cd $@$(tmp) && $(AR) xv $(call debname,$@,$(ARCH))
+	cd / && $(TAR) xjf $(CURDIR)/$@$(tmp)/data.tar.bz2
+	-$(RM) -r $@$(tmp)
+else
+$(PACKAGES):
+	@$(ECHO) Unsupported architecture $(ARCH). >&2
+	@exit 1
+endif
+else
+$(PACKAGES):
+	@$(ECHO) Installation requires the ARCH= argument. >&2
+	@exit 1
+endif
+
+ARCHCACHES := $(foreach arch,$(ARCHES),$(arch).cache)
+cache: $(ARCHCACHES)
+$(ARCHCACHES): %.cache: \
+         $(foreach pkg,$(PACKAGES),pkgcache/$(call debname,$(pkg),%))
+
+pkgcache/%.deb:
+	$(MKDIR) -p $(@D)
+	[ -s $@ ] || \
+	    $(WGET) -q -P$(@D) $(call deb2url,$(@F))
+	
+clearcache:
+	-$(RM) -r pkgcache 2>/dev/null
+	@$(ECHO) Warning: installed binaries have not been removed
+
+help:  $(PROGNAME).man
+	$(NROFF) -man $<
+
+.PHONY: cache configure clearcache help
+.INTERMEDIATE: $(ARCHCACHES)

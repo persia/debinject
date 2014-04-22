@@ -1,0 +1,88 @@
+.TH BOOTSTRAP 1
+.SH NAME
+bootstrap \- download or install binaries from Debian for bootstrapping
+.SH SYNOPSIS
+.B bootstrap
+\fBARCH=\fIarchitecture
+.br
+.B bootstrap
+.I command
+.br
+.B bootstrap help
+.SH DESCRIPTION
+.B bootstrap
+provides a utility to download and optionally install Debian-format packages
+from the Debian archives to support bootstrapping self-hosted compilers in
+environments that are ABI-compatible with Debian.
+.PP
+To use, adjust \fIbootstrap.conf\fR to match the needs of the bootstrap
+underway, create a configuration script that will make the result usable
+on the target system (this replaces the Debian maintainer scripts, which
+are otherwise not run, and use the \fBbootstrap ARCH=\fIarchitecture\fR form
+to install and configure the bootstrap packages.
+.PP
+In the event the target environment has restrictions on the sources from which
+software may be installed, or limited access to network resources, the cache
+facility allows downloading binary packages into the bootstrap working
+directory.
+In the event the cache is prepopulated when \fBbootstrap\fR is run, no network
+access is required, and \fBbootstrap\fR will install from the cache.
+.SH COMMANDS
+.TP
+.B bootstrap ARCH=\fIarchitecture
+Install Debian binaries for \fIarchitecture\fR on the local system.
+.TP
+.B bootstrap cache
+Populate the package cache with .deb files for all supported architectures
+.TP
+.B bootstrap \fIarchitecture\fB.cache
+Poplate the package cache with .deb files for \fIarchitecture\fR only
+.TP
+.B bootstrap clearcache
+Remove the local package cache
+.TP
+.B bootstrap help
+Show this help
+.SH CONFIGURATION
+.TP
+.B SOURCE
+The source package to be bootstrapped.
+.TP
+.B PACKAGES
+The list of binary packages required to bootstrap the source.
+.TP
+.B VERSION
+The base Debian revision to use for bootstrapping.
+.TP
+.B ARCHES
+The architectures to which Debian has bootstrapped the source.
+Alternately, the architectures to be downloaded with the \fBcache\fR command.
+.TP
+.B MIRROR
+The preferred Debian mirror.
+.TP
+.B CONFSCRIPT
+The configuration script to run once packages are unpacked on the local system.
+.SH FILES
+.TP
+.I bootstrap.conf
+bootstrap configuration file
+.TP
+.I pkgcache/*.deb
+Debian binary package files cached for use in future runs
+.SH BUGS
+\fBbootstrap\fR does not support complex boostrapping environments, where
+binary packages from multiple source packages are required to bootstrap
+the package.
+In such situations, one may run bootstrap multiple times, with appropriate
+adjustments to the configuration file.  Support for specifying the configuration
+file on the command line would be a better solution.
+.PP
+\fBbootstrap\fR does not support Debian archive mirrors with nonstandard
+file layouts, or prefixes other than /debian/.
+These are controlled in the srcpath and deb2url functions, in the event
+that some user requires local modifications.
+.PP
+\fBbootstrap\fR does not guard the details of implementation sufficiently
+from the user, which may cause confusion due to the strict syntax of the
+configuration file, and the opacity of some error messages.
