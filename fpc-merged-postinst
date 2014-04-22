@@ -1,0 +1,93 @@
+#! /bin/sh
+
+set -x
+
+# Gleaned from fp-compiler postinst
+
+CFG_PATH='/etc/fpc.cfg'
+PKG_CFG_PATH="/etc/fpc-2.6.2.cfg"
+LIB_DIR="/usr/lib/fpc"
+MAN_DIR="/usr/share/man/man1"
+
+/usr/bin/fpcmkcfg-2.6.2 -0 -d "basepath=${LIB_DIR}/\$fpcversion" -o "${PKG_CFG_PATH}"
+echo '-Fl/usr/lib/$fpctarget0*' >> ${PKG_CFG_PATH}
+cat >> ${PKG_CFG_PATH} <<EOF
+# Third party units should be installe in a, multi-arch compatible location.
+# Units should be installed in /usr/lib/\$fpctarget-gnu/fp-units-2.6.2/\$pkg/.
+# Ech fp-units package should install a configuration file called \$pkg.cfg in
+#CFGDIR /etc/fpc-\$fpcversion.cfg.d/\$fpctarget
+EOF
+
+ln -s /usr/bin/fpc-2.6.2 /usr/bin/fpc
+ln -s ${LIB_DIR}/2.6.2/ppcx64 /usr/bin/ppcx64
+ln -s /usr/bin/fpc-depends-2.6.2 /usr/bin/fpc-depends
+ln -s /usr/bin/fpcres-2.6.2 /usr/bin/fpcres
+ln -s ${MAN_DIR}/ppcx64-2.6.2.1.gz ${MAN_DIR}/ppcx64.1.gz
+ln -s ${MAN_DIR}/fpc-2.6.2.1.gz ${MAN_DIR}/fpc.1.gz
+ln -s ${MAN_DIR}/fpc-depends-2.6.2.1.gz ${MAN_DIR}/fpc-depends.1.gz
+ln -s ${PKG_CFG_PATH} ${CFG_PATH}
+
+# Gleaned from fp-utils postinst
+
+FPCDIR=/usr/lib/fpc
+
+ln -s ${FPCDIR}/2.6.2 ${FPCDIR}/default
+ln -s ${FPCDIR}/2.6.2/lexyacc ${FPCDIR}/lexyacc
+ln -s /usr/bin/chmcmd-2.6.2 /usr/bin/chmcmd
+ln -s /usr/bin/chmls-2.6.2 /usr/bin/chmls
+ln -s /usr/bin/ifpc-2.6.2 /usr/bin/ifpc
+ln -s /usr/bin/fppkg-2.6.2 /usr/bin/fppkg
+ln -s /usr/bin/ifpc-2.6.2 /usr/bin/instantfpc
+ln -s /usr/bin/ppufiles-2.6.2 /usr/bin/ppufiles
+ln -s /usr/bin/ppudump-2.6.2 /usr/bin/ppudump
+ln -s /usr/bin/ppumove-2.6.2 /usr/bin/ppumove
+ln -s /usr/bin/ppdep-2.6.2 /usr/bin/ppdep
+ln -s /usr/bin/ptop-2.6.2 /usr/bin/ptop
+ln -s /usr/bin/rstconv-2.6.2 /usr/bin/rstconv
+ln -s /usr/bin/data2inc-2.6.2 /usr/bin/data2inc
+ln -s /usr/bin/bin2obj-2.6.2 /usr/bin/bin2obj
+ln -s /usr/bin/delp-2.6.2 /usr/bin/delp
+ln -s /usr/bin/plex-2.6.2 /usr/bin/plex
+ln -s /usr/bin/pyacc-2.6.2 /usr/bin/pyacc
+ln -s /usr/bin/h2pas-2.6.2 /usr/bin/h2pas
+ln -s /usr/bin/h2paspp-2.6.2 /usr/bin/h2paspp
+ln -s /usr/bin/postw32-2.6.2 /usr/bin/postw32
+ln -s /usr/bin/fpclasschart-2.6.2 /usr/bin/fpclasschart
+ln -s /usr/bin/fpcmake-2.6.2 /usr/bin/fpcmake
+ln -s /usr/bin/fpcsubst-2.6.2 /usr/bin/fpcsubst
+ln -s /usr/bin/fprcp-2.6.2 /usr/bin/fprcp
+ln -s /usr/bin/fpdoc-2.6.2 /usr/bin/fpdoc
+ln -s /usr/bin/makeskel-2.6.2 /usr/bin/makeskel
+ln -s /usr/bin/relpath-2.6.2 /usr/bin/relpath
+ln -s /usr/bin/rmcvsdir-2.6.2 /usr/bin/rmcvsdir
+ln -s /usr/bin/unitdiff-2.6.2 /usr/bin/unitdiff
+ln -s ${MANDIR}/chmcmd-2.6.2.1.gz ${MANDIR}/chmcmd.1.gz
+ln -s ${MANDIR}/chmls-2.6.2.1.gz ${MANDIR}/chmls.1.gz
+ln -s ${MANDIR}/ifpc-2.6.2.1.gz ${MANDIR}/ifpc.1.gz
+ln -s ${MANDIR}/fppkg-2.6.2.1.gz ${MANDIR}/fppkg.1.gz
+ln -s ${MANDIR}/ifpc-2.6.2.1.gz ${MANDIR}/instantfpc.1.gz
+ln -s ${MANDIR}/bin2obj-2.6.2.1.gz ${MANDIR}/bin2obj.1.gz
+ln -s ${MANDIR}/data2inc-2.6.2.1.gz ${MANDIR}/data2inc.1.gz
+ln -s ${MANDIR}/fprcp-2.6.2.1.gz ${MANDIR}/fprcp.1.gz
+ln -s ${MANDIR}/h2paspp-2.6.2.1.gz ${MANDIR}/h2paspp.1.gz
+ln -s ${MANDIR}/makeskel-2.6.2.1.gz ${MANDIR}/makeskel.1.gz
+ln -s ${MANDIR}/postw32-2.6.2.1.gz ${MANDIR}/postw32.1.gz
+ln -s ${MANDIR}/relpath-2.6.2.1.gz ${MANDIR}/relpath.1.gz
+ln -s ${MANDIR}/rmcvsdir-2.6.2.1.gz ${MANDIR}/rmcvsdir.1.gz
+ln -s ${MANDIR}/unitdiff-2.6.2.1.gz ${MANDIR}/unitdiff.1.gz
+ln -s ${MANDIR}/delp-2.6.2.1.gz ${MANDIR}/delp.1.gz
+ln -s ${MANDIR}/fpcmake-2.6.2.1.gz ${MANDIR}/fpcmake.1.gz
+ln -s ${MANDIR}/fpcsubst-2.6.2.1.gz ${MANDIR}/fpcsubst.1.gz
+ln -s ${MANDIR}/h2pas-2.6.2.1.gz ${MANDIR}/h2pas.1.gz
+ln -s ${MANDIR}/plex-2.6.2.1.gz ${MANDIR}/plex.1.gz
+ln -s ${MANDIR}/ppdep-2.6.2.1.gz ${MANDIR}/ppdep.1.gz
+ln -s ${MANDIR}/ppudump-2.6.2.1.gz ${MANDIR}/ppudump.1.gz
+ln -s ${MANDIR}/ppufiles-2.6.2.1.gz ${MANDIR}/ppufiles.1.gz
+ln -s ${MANDIR}/ppumove-2.6.2.1.gz ${MANDIR}/ppumove.1.gz
+ln -s ${MANDIR}/ptop-2.6.2.1.gz ${MANDIR}/ptop.1.gz
+ln -s ${MANDIR}/pyacc-2.6.2.1.gz ${MANDIR}/pyacc.1.gz
+ln -s ${MANDIR}/rstconv-2.6.2.1.gz ${MANDIR}/rstconv.1.gz
+ln -s ${MANDIR}/fpdoc-2.6.2.1.gz ${MANDIR}/fpdoc.1.gz
+ln -s ${MANDIR}/fpclasschart-2.6.2.1.gz ${MANDIR}/fpclasschart.1.gz
+ln -s /usr/share/man/man5/fpcmake-2.6.2.5.gz /usr/share/man/man5/fpcmake.5.gz
+ln -s /usr/share/man/man5/ptop-2.6.2.cfg.5.gz /usr/share/man/man5/ptop.cfg.5.gz
