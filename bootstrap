@@ -37,6 +37,10 @@ debname = $(1)_$(VERSION)_$(2).deb
 configure: $(PACKAGES)
 	-[ -s $(CONFSCRIPT) ] && $(CONFSCRIPT)
 
+ifndef DESTDIR
+DESTDIR := /
+endif
+
 ifdef ARCH
 ifneq ($(filter $(ARCH),$(ARCHES)),)
 $(PACKAGES): tmp := $(shell $(MKTEMP) -u tmpXXXXXX)
@@ -44,7 +48,7 @@ $(PACKAGES): %: pkgcache/$(call debname,%,$(ARCH))
 	$(MKDIR) -p $@$(tmp)/
 	$(CP) $< $@$(tmp)/
 	cd $@$(tmp) && $(AR) xv $(call debname,$@,$(ARCH))
-	cd / && $(TAR) xjf $(CURDIR)/$@$(tmp)/data.tar.bz2
+	cd $(DESTDIR) && $(TAR) xjf $(CURDIR)/$@$(tmp)/data.tar.bz2
 	-$(RM) -r $@$(tmp)
 else
 $(PACKAGES):
