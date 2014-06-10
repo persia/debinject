@@ -1,6 +1,6 @@
-bootstrap is a small utility to cache and/or unpack debian-format binaries
+debinject is a small utility to cache and/or unpack debian-format binaries
 in non-Debian environments, intended as an aid to porting self-hosting
 toolchains to new environments, where those toolchains are supported by
 Debian.
 
-For more information, run `bootstrap help`, or read the manpage.
+For more information, run debinject help, or read the manpage.
