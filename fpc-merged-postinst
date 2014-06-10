@@ -9,6 +9,8 @@ PKG_CFG_PATH="/etc/fpc-2.6.4.cfg"
 LIB_DIR="/usr/lib/fpc"
 MAN_DIR="/usr/share/man/man1"
 
+mkdir -p ${DESTDIR}/etc
+
 /usr/bin/fpcmkcfg-2.6.4 -0 -d "basepath=${LIB_DIR}/\$fpcversion" -o "${DESTDIR}/${PKG_CFG_PATH}"
 echo '-Fl/usr/lib/$fpctarget0*' >> ${DESTDIR}/${PKG_CFG_PATH}
 cat >> ${DESTDIR}/${PKG_CFG_PATH} <<EOF
@@ -17,6 +19,8 @@ cat >> ${DESTDIR}/${PKG_CFG_PATH} <<EOF
 # Ech fp-units package should install a configuration file called \$pkg.cfg in
 #CFGDIR /etc/fpc-\$fpcversion.cfg.d/\$fpctarget
 EOF
+
+mkdir -p ${DESTDIR}/usr/bin ${DESTDIR}/${MAN_DIR}
 
 ln -s /usr/bin/fpc-2.6.4 ${DESTDIR}/usr/bin/fpc
 ln -s ${LIB_DIR}/2.6.4/ppcx64 ${DESTDIR}/usr/bin/ppcx64
@@ -30,6 +34,8 @@ ln -s ${PKG_CFG_PATH} ${CFG_PATH}
 # Gleaned from fp-utils postinst
 
 FPCDIR=/usr/lib/fpc
+
+mkdir -p ${DESTDIR}/${FPCDIR} ${DESTDIR}/usr/share/man/man5
 
 ln -s ${FPCDIR}/2.6.4 ${DESTDIR}/${FPCDIR}/default
 ln -s ${FPCDIR}/2.6.4/lexyacc ${DESTDIR}/${FPCDIR}/lexyacc
@@ -61,33 +67,33 @@ ln -s /usr/bin/makeskel-2.6.4 ${DESTDIR}/usr/bin/makeskel
 ln -s /usr/bin/relpath-2.6.4 ${DESTDIR}/usr/bin/relpath
 ln -s /usr/bin/rmcvsdir-2.6.4 ${DESTDIR}/usr/bin/rmcvsdir
 ln -s /usr/bin/unitdiff-2.6.4 ${DESTDIR}/usr/bin/unitdiff
-ln -s ${MANDIR}/chmcmd-2.6.4.1.gz ${DESTDIR}/${MANDIR}/chmcmd.1.gz
-ln -s ${MANDIR}/chmls-2.6.4.1.gz ${DESTDIR}/${MANDIR}/chmls.1.gz
-ln -s ${MANDIR}/ifpc-2.6.4.1.gz ${DESTDIR}/${MANDIR}/ifpc.1.gz
-ln -s ${MANDIR}/fppkg-2.6.4.1.gz ${DESTDIR}/${MANDIR}/fppkg.1.gz
-ln -s ${MANDIR}/ifpc-2.6.4.1.gz ${DESTDIR}/${MANDIR}/instantfpc.1.gz
-ln -s ${MANDIR}/bin2obj-2.6.4.1.gz ${DESTDIR}/${MANDIR}/bin2obj.1.gz
-ln -s ${MANDIR}/data2inc-2.6.4.1.gz ${DESTDIR}/${MANDIR}/data2inc.1.gz
-ln -s ${MANDIR}/fprcp-2.6.4.1.gz ${DESTDIR}/${MANDIR}/fprcp.1.gz
-ln -s ${MANDIR}/h2paspp-2.6.4.1.gz ${DESTDIR}/${MANDIR}/h2paspp.1.gz
-ln -s ${MANDIR}/makeskel-2.6.4.1.gz ${DESTDIR}/${MANDIR}/makeskel.1.gz
-ln -s ${MANDIR}/postw32-2.6.4.1.gz ${DESTDIR}/${MANDIR}/postw32.1.gz
-ln -s ${MANDIR}/relpath-2.6.4.1.gz ${DESTDIR}/${MANDIR}/relpath.1.gz
-ln -s ${MANDIR}/rmcvsdir-2.6.4.1.gz ${DESTDIR}/${MANDIR}/rmcvsdir.1.gz
-ln -s ${MANDIR}/unitdiff-2.6.4.1.gz ${DESTDIR}/${MANDIR}/unitdiff.1.gz
-ln -s ${MANDIR}/delp-2.6.4.1.gz ${DESTDIR}/${MANDIR}/delp.1.gz
-ln -s ${MANDIR}/fpcmake-2.6.4.1.gz ${DESTDIR}/${MANDIR}/fpcmake.1.gz
-ln -s ${MANDIR}/fpcsubst-2.6.4.1.gz ${DESTDIR}/${MANDIR}/fpcsubst.1.gz
-ln -s ${MANDIR}/h2pas-2.6.4.1.gz ${DESTDIR}/${MANDIR}/h2pas.1.gz
-ln -s ${MANDIR}/plex-2.6.4.1.gz ${DESTDIR}/${MANDIR}/plex.1.gz
-ln -s ${MANDIR}/ppdep-2.6.4.1.gz ${DESTDIR}/${MANDIR}/ppdep.1.gz
-ln -s ${MANDIR}/ppudump-2.6.4.1.gz ${DESTDIR}/${MANDIR}/ppudump.1.gz
-ln -s ${MANDIR}/ppufiles-2.6.4.1.gz ${DESTDIR}/${MANDIR}/ppufiles.1.gz
-ln -s ${MANDIR}/ppumove-2.6.4.1.gz ${DESTDIR}/${MANDIR}/ppumove.1.gz
-ln -s ${MANDIR}/ptop-2.6.4.1.gz ${DESTDIR}/${MANDIR}/ptop.1.gz
-ln -s ${MANDIR}/pyacc-2.6.4.1.gz ${DESTDIR}/${MANDIR}/pyacc.1.gz
-ln -s ${MANDIR}/rstconv-2.6.4.1.gz ${DESTDIR}/${MANDIR}/rstconv.1.gz
-ln -s ${MANDIR}/fpdoc-2.6.4.1.gz ${DESTDIR}/${MANDIR}/fpdoc.1.gz
-ln -s ${MANDIR}/fpclasschart-2.6.4.1.gz ${DESTDIR}/${MANDIR}/fpclasschart.1.gz
+ln -s ${MAN_DIR}/chmcmd-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/chmcmd.1.gz
+ln -s ${MAN_DIR}/chmls-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/chmls.1.gz
+ln -s ${MAN_DIR}/ifpc-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/ifpc.1.gz
+ln -s ${MAN_DIR}/fppkg-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/fppkg.1.gz
+ln -s ${MAN_DIR}/ifpc-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/instantfpc.1.gz
+ln -s ${MAN_DIR}/bin2obj-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/bin2obj.1.gz
+ln -s ${MAN_DIR}/data2inc-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/data2inc.1.gz
+ln -s ${MAN_DIR}/fprcp-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/fprcp.1.gz
+ln -s ${MAN_DIR}/h2paspp-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/h2paspp.1.gz
+ln -s ${MAN_DIR}/makeskel-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/makeskel.1.gz
+ln -s ${MAN_DIR}/postw32-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/postw32.1.gz
+ln -s ${MAN_DIR}/relpath-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/relpath.1.gz
+ln -s ${MAN_DIR}/rmcvsdir-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/rmcvsdir.1.gz
+ln -s ${MAN_DIR}/unitdiff-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/unitdiff.1.gz
+ln -s ${MAN_DIR}/delp-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/delp.1.gz
+ln -s ${MAN_DIR}/fpcmake-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/fpcmake.1.gz
+ln -s ${MAN_DIR}/fpcsubst-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/fpcsubst.1.gz
+ln -s ${MAN_DIR}/h2pas-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/h2pas.1.gz
+ln -s ${MAN_DIR}/plex-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/plex.1.gz
+ln -s ${MAN_DIR}/ppdep-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/ppdep.1.gz
+ln -s ${MAN_DIR}/ppudump-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/ppudump.1.gz
+ln -s ${MAN_DIR}/ppufiles-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/ppufiles.1.gz
+ln -s ${MAN_DIR}/ppumove-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/ppumove.1.gz
+ln -s ${MAN_DIR}/ptop-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/ptop.1.gz
+ln -s ${MAN_DIR}/pyacc-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/pyacc.1.gz
+ln -s ${MAN_DIR}/rstconv-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/rstconv.1.gz
+ln -s ${MAN_DIR}/fpdoc-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/fpdoc.1.gz
+ln -s ${MAN_DIR}/fpclasschart-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/fpclasschart.1.gz
 ln -s /usr/share/man/man5/fpcmake-2.6.4.5.gz ${DESTDIR}/usr/share/man/man5/fpcmake.5.gz
 ln -s /usr/share/man/man5/ptop-2.6.4.cfg.5.gz ${DESTDIR}/usr/share/man/man5/ptop.cfg.5.gz
