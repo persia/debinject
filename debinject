@@ -48,7 +48,7 @@ $(PACKAGES): %: pkgcache/$(call debname,%,$(ARCH))
 	$(MKDIR) -p $@$(tmp)/
 	$(CP) $< $@$(tmp)/
 	cd $@$(tmp) && $(AR) xv $(call debname,$@,$(ARCH))
-	cd $(DESTDIR) && $(TAR) xjf $(CURDIR)/$@$(tmp)/data.tar.bz2
+	cd $(DESTDIR) && $(TAR) xf $(CURDIR)/$@$(tmp)/data.tar.*
 	-$(RM) -r $@$(tmp)
 else
 $(PACKAGES):
