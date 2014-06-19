@@ -63,6 +63,7 @@ The preferred Debian mirror.
 .TP
 .B CONFSCRIPT
 The configuration script to run once packages are unpacked on the local system.
+This configuration script will be passed the ARCH argument when run.
 .SH FILES
 .TP
 .I bootstrap.conf
