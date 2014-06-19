@@ -9,6 +9,17 @@ PKG_CFG_PATH="/etc/fpc-2.6.4.cfg"
 LIB_DIR="/usr/lib/fpc"
 MAN_DIR="/usr/share/man/man1"
 
+SUFFIX=""
+[ "$1" == "amd64" ] && SUFFIX="x64"
+[ "$1" == "armel" ] && SUFFIX="arm"
+[ "$1" == "armhf" ] && SUFFIX="arm"
+[ "$1" == "i386" ] && SUFFIX="386"
+
+if [ "${SUFFIX}" == "" ]; then
+  echo 'Requires one argument, in the set "amd64 armel armhf i386"'
+  exit 1
+fi
+
 mkdir -p ${DESTDIR}/etc
 
 /usr/bin/fpcmkcfg-2.6.4 -0 -d "basepath=${LIB_DIR}/\$fpcversion" -o "${DESTDIR}/${PKG_CFG_PATH}"
@@ -23,13 +34,14 @@ EOF
 mkdir -p ${DESTDIR}/usr/bin ${DESTDIR}/${MAN_DIR}
 
 ln -s /usr/bin/fpc-2.6.4 ${DESTDIR}/usr/bin/fpc
-ln -s ${LIB_DIR}/2.6.4/ppcx64 ${DESTDIR}/usr/bin/ppcx64
 ln -s /usr/bin/fpc-depends-2.6.4 ${DESTDIR}/usr/bin/fpc-depends
 ln -s /usr/bin/fpcres-2.6.4 ${DESTDIR}/usr/bin/fpcres
-ln -s ${MAN_DIR}/ppcx64-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/ppcx64.1.gz
 ln -s ${MAN_DIR}/fpc-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/fpc.1.gz
 ln -s ${MAN_DIR}/fpc-depends-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/fpc-depends.1.gz
 ln -s ${PKG_CFG_PATH} ${CFG_PATH}
+
+ln -s ${LIB_DIR}/2.6.4/ppc${SUFFIX} ${DESTDIR}/usr/bin/ppc${SUFFIX}
+ln -s ${MAN_DIR}/ppc${SUFFIX}-2.6.4.1.gz ${DESTDIR}/${MAN_DIR}/ppc${SUFFIX}.1.gz
 
 # Gleaned from fp-utils postinst
 
