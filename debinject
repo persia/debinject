@@ -35,7 +35,7 @@ deb2url = http://$(MIRROR)/$(call srcpath,$(SOURCE))/$(1)
 debname = $(1)_$(VERSION)_$(2).deb
 
 configure: $(PACKAGES)
-	-[ -s $(CONFSCRIPT) ] && $(CONFSCRIPT)
+	-[ -s $(CONFSCRIPT) ] && ./$(CONFSCRIPT)
 
 ifndef DESTDIR
 DESTDIR := /
